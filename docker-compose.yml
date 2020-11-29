@@ -1,0 +1,21 @@
+version: '3'
+services:
+  consecucion:
+    restart: always
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:80
+    volumes:
+      - .:/django-docker
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=Home.consecucion"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.entryPoints=https"
+      - "traefik.frontend.rule=Host:consecucion.1bits.org"
+      - "traefik.port=80"
+networks:
+  web:
+    external: true
