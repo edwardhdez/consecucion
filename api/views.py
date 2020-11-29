@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from .serializers import ObjetivoSerializer, ConsecucionSerializer
 from calculadora.models import Objetivo, Consecucion
 from django.db.models import Max, Min
+from rest_framework import status
+
 
 
 @api_view(['GET'])
@@ -56,7 +58,9 @@ def actualizarObjetivo(request, pk):
     serializer = ObjetivoSerializer(instance=objetivo, data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
+        return Response(serializer.data)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

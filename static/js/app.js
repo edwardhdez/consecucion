@@ -42,19 +42,20 @@ function editar(elmnt) {
     var meta = document.getElementById(`meta-${consecucion_id}`).innerHTML;
     var porcentaje = document.getElementById(`porcentaje-${consecucion_id}`).innerHTML;
 
-    alert(meta);
-    document.getElementById("agregar-descripcion").setAttribute('value', descripcion);
-    document.getElementById("agregar-meta").setAttribute('value', meta);
-    document.getElementById("agregar-porcentaje").setAttribute('value', porcentaje);
+
+    document.getElementById("agregar-descripcion").value = descripcion;
+    document.getElementById("agregar-meta").value = meta;
+    document.getElementById("agregar-porcentaje").value = porcentaje;
 
 }
 
 function resetAgregarConsecucionForm() {
 
-    document.getElementById("consecucion-id").setAttribute('value', "0");
-    document.getElementById("agregar-descripcion").setAttribute('value', "");
-    document.getElementById("agregar-meta").setAttribute('value', "");
-    document.getElementById("agregar-porcentaje").setAttribute('value', "");
+    document.getElementById("consecucion-id").value = "0"
+    document.getElementById("agregar-descripcion").value = "";
+    document.getElementById("agregar-meta").value = "";
+    document.getElementById("agregar-porcentaje").value = "";
+    debugger
 }
 
 var actualizarObjetivoBtn = document.getElementById('actualizar-objetivo');
@@ -62,7 +63,7 @@ actualizarObjetivoBtn.addEventListener("click", function (e) {
     var objetivo = document.getElementById('objetivo-id').value;
     var descripcion = document.getElementById('objetivo').value;
     var metrica = document.getElementById('metrica').value;
-    var metaAscendente = document.getElementById('meta-ascendente').value;
+    var metaAscendente = document.getElementById('meta-ascendente').checked;
 
     var url = `${BASE_URL}api/objetivo/actualizar/${objetivo}`;
 
@@ -73,7 +74,6 @@ actualizarObjetivoBtn.addEventListener("click", function (e) {
             'X-CSRFToken': csrftoken
         },
         body: JSON.stringify({
-            'id': objetivo,
             'descripcion': descripcion,
             'metrica': metrica,
             'meta_ascendente': metaAscendente,
@@ -122,7 +122,6 @@ agregarBtn.addEventListener("click", function (e) {
         crearConsecucion();
     }
     else {
-        alert("Actualizar" + consecucion_id)
         editarConsecucion(consecucion_id);
     }
 
@@ -136,7 +135,7 @@ function crearConsecucion() {
     var meta = document.getElementById('agregar-meta').value;
     var porcentaje = document.getElementById('agregar-porcentaje').value;
 
-    fetch(url, {
+    return fetch(url, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -153,6 +152,8 @@ function crearConsecucion() {
         .then(function (data) {
             addRowConsecucion(data);
         })
+
+    
 
 }
 
