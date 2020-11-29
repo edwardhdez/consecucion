@@ -1,0 +1,1 @@
+web: gunicorn consecucion.wsgi --log-gile -
