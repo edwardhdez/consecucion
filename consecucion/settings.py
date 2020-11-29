@@ -25,7 +25,7 @@ SECRET_KEY = 'v$rscewptf=56(kfp1dqhb#y@ipcd#lf=s%dd^s*2onvm8*haw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost','consecucion.1bits.org','*']
 
 
 # Application definition
