@@ -36,11 +36,8 @@
 
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="meta-ascendente" 
-                               {% if objetivo.meta_ascendente %}
-                                   checked
-                                {% endif %}   
-                            >
+                            <input class="form-check-input" type="checkbox" value="" id="meta-ascendente"
+                                {% if objetivo.meta_ascendente %} checked {% endif %}>
                             <label class="form-check-label" for="defaultCheck1">
                                 Meta Ascendente
                             </label>
@@ -48,9 +45,9 @@
                     </div>
 
                     <div class="form-group form-field">
-                        <button type="button" id="actualizar-objetivo" class="btn btn-primary">Actualizar
-                            Objetivo</button>
+                        <button type="button" id="actualizar-objetivo" class="btn btn-primary">Actualizar Objetivo</button>
                     </div>
+                    </span><a href="/" style="margin-left: -45px;" class="btn btn-dark">Regresar</a></span>
                 </div>
             </div>
 
@@ -58,7 +55,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="box-element">
-
+                        <div id="guardar-consecucion-error"></div>
                         <input type="hidden" id="consecucion-id" value="0">
 
                         <div class="form-field">
@@ -66,12 +63,12 @@
                                 placeholder="Descripción">
                         </div>
                         <div class="form-field">
-                            <input required class="form-control" id="agregar-meta" type="number" min="0" max="100" name="meta"
-                                placeholder="Meta">
+                            <input required class="form-control" id="agregar-meta" type="number" min="0" max="100"
+                                name="meta" placeholder="Meta">
                         </div>
                         <div class="form-field">
-                            <input required class="form-control" id="agregar-porcentaje" type="text" name="consecucion"
-                                placeholder="% Consecución">
+                            <input required class="form-control" id="agregar-porcentaje" type="number" min="0"
+                                name="consecucion" placeholder="% Consecución">
                         </div>
                         <div class="form-field">
                             <button id=agregar-btn type="button" class="btn btn-success">Guardar</button>
@@ -106,7 +103,8 @@
                                 <p id="porcentaje-{{consecucion.id}}">{{consecucion.porcentaje|floatformat:2}}</p>
                             </div>
                             <div style="flex:2">
-                                <button type="button" onclick="editar(this)" id="{{consecucion.id}}" class="btn btn-primary">Editar</button>
+                                <button type="button" onclick="editar(this)" id="{{consecucion.id}}"
+                                    class="btn btn-primary">Editar</button>
                                 <button type="button" onclick="borrar(this)" id="{{consecucion.id}}"
                                     class="btn btn-danger borrar"> Borrar</button>
                             </div>
@@ -117,6 +115,7 @@
             </div>
 
             <div class="col-lg-4">
+                <div id="error-calcular"></div>
                 <div class="box-element-result">
                     <div class="consecucion-row">
                         <div style="flex:1"><strong>Resultado</strong></div>
@@ -126,7 +125,7 @@
 
                     <div class="consecucion-row">
                         <div style="flex:1">
-                            <input style="flex:1" id="resultado" class="form-control" type="text" value="">
+                            <input style="flex:1" id="resultado" class="form-control" type="number" value="">
                         </div>
                         <div style="flex:1">
                             <input style="flex:1" id="consecucion-porcentaje" class="form-control" type="text"
@@ -164,6 +163,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="{% static 'js/app.js' %}" type="text/javascript"></script>
 </body>
 

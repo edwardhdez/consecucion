@@ -1,0 +1,44 @@
+{% extends 'calculadora/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="margin-top: 40px;">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="box-element">
+                <div class="consecucion-row">
+                    <div style="flex:3"><strong>Descripcion</strong></div>
+                    <div style="flex:2"><strong>Metrica</strong></div>
+                    <div style="flex:2"><strong>Meta ascendente </strong></div>
+                    <div style="flex:1"><strong>Tabla Consecucion</strong></div>
+
+                </div>
+
+                {% for objetivo in objetivos %}
+                <div class="consecucion-row">
+                    <div style="flex:3">
+                        <p class="descripcion-objetivo">{{objetivo.descripcion}}</p>
+                    </div>
+                    <div style="flex:2">
+                        <p>{{objetivo.metrica}}</p>
+                    </div>
+                    <div style="flex:2">
+                        {% if objetivo.meta_ascendente %}
+                            <p>Si</p>
+                        {% else %}   
+                            <p>No</p>
+                        {% endif %}
+                    </div>
+                    <div style="flex:1">
+                        <a href="{% url 'calculadora' %}?objetivo={{objetivo.id}}" class="btn btn-primary">Ir</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

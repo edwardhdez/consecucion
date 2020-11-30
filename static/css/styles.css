@@ -39,3 +39,16 @@ body{
 .hidden{
 	display: none;
 }
+
+.descripcion-objetivo{
+  text-align: justify;
+  text-justify: inter-word;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.central-container {
+	display: flex;
+	justify-content: center;  
+  }
+

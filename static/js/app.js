@@ -1,12 +1,55 @@
 var BASE_URL = `${window.location.protocol}//${window.location.host}/`;
 
+
+function errorCalcular(message) {
+    $("#error-calcular").animate({
+        height: '+=72px'
+    }, 300);
+    $('<div class="alert alert-danger">' +
+        '<button type="button" class="close" data-dismiss="alert">' +
+        '&times;</button>' + message + '</div>').hide().appendTo('#error-calcular').fadeIn(1000);
+
+    $(".alert").delay(2000).fadeOut(
+        "normal",
+        function () {
+            $(this).remove();
+        });
+
+    $("#error-calcular").delay(3000).animate({
+        height: '-=72px'
+    }, 300);
+
+}
+
+function errorConsecucion(message) {
+
+    $("#guardar-consecucion-error").animate({
+        height: '+=72px'
+    }, 300);
+    $('<div class="alert alert-danger">' +
+        '<button type="button" class="close" data-dismiss="alert">' +
+        '&times;</button>' + message + '</div>').hide().appendTo('#guardar-consecucion-error').fadeIn(1000);
+
+    $(".alert").delay(2000).fadeOut(
+        "normal",
+        function () {
+            $(this).remove();
+        });
+
+    $("#guardar-consecucion-error").delay(3000).animate({
+        height: '-=72px'
+    }, 300);
+}
+
+
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
+
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
@@ -42,7 +85,6 @@ function editar(elmnt) {
     var meta = document.getElementById(`meta-${consecucion_id}`).innerHTML;
     var porcentaje = document.getElementById(`porcentaje-${consecucion_id}`).innerHTML;
 
-
     document.getElementById("agregar-descripcion").value = descripcion;
     document.getElementById("agregar-meta").value = meta;
     document.getElementById("agregar-porcentaje").value = porcentaje;
@@ -55,7 +97,7 @@ function resetAgregarConsecucionForm() {
     document.getElementById("agregar-descripcion").value = "";
     document.getElementById("agregar-meta").value = "";
     document.getElementById("agregar-porcentaje").value = "";
-    debugger
+
 }
 
 var actualizarObjetivoBtn = document.getElementById('actualizar-objetivo');
@@ -95,6 +137,11 @@ calcularBtn.addEventListener("click", function (e) {
     var objetivo = document.getElementById('objetivo-id').value;
     var resultado = document.getElementById('resultado').value;
 
+    if (resultado == "") {
+        errorCalcular("Debe especificar un valor");
+        return;
+    }
+
     fetch(url, {
         method: 'POST',
         headers: {
@@ -107,10 +154,17 @@ calcularBtn.addEventListener("click", function (e) {
         })
     }).then(response => response.json())
         .then(function (data) {
-            document.getElementById("consecucion-porcentaje").setAttribute('value', data.consecucion);
+
+            if (data.error && data.error != null) {
+                errorCalcular(data.message);
+            }
+            else {
+                document.getElementById("consecucion-porcentaje").value = data.consecucion;
+            }
         })
 
 })
+
 
 
 var agregarBtn = document.getElementById('agregar-btn');
@@ -128,12 +182,36 @@ agregarBtn.addEventListener("click", function (e) {
     resetAgregarConsecucionForm();
 })
 
+function validarConsecucion(descripcion, meta, porcentaje) {
+
+    if (descripcion == "" || meta == "" || porcentaje == "") {
+        errorConsecucion("Debe completar todos los campos");
+        return false;
+    }
+
+    if(porcentaje > 100 || porcentaje < 0){
+        errorConsecucion("Digitar un porcentaje entre 0% a 100%");
+        return false;
+    }
+
+    if(meta < 0){
+        errorConsecucion("La meta debe ser mayor a 0");
+        return false;
+    }
+
+    return true;
+}
+
 function crearConsecucion() {
     var url = `${BASE_URL}api/consecucion/crear`;
     var objetivo = document.getElementById('objetivo-id').value;
     var descripcion = document.getElementById('agregar-descripcion').value;
     var meta = document.getElementById('agregar-meta').value;
     var porcentaje = document.getElementById('agregar-porcentaje').value;
+
+    if (!validarConsecucion(descripcion, meta, porcentaje)) {
+        return;
+    }
 
     return fetch(url, {
         method: 'POST',
@@ -153,7 +231,7 @@ function crearConsecucion() {
             addRowConsecucion(data);
         })
 
-    
+
 
 }
 
@@ -165,6 +243,10 @@ function editarConsecucion(consecucion_id) {
     var meta = document.getElementById('agregar-meta').value;
     var porcentaje = document.getElementById('agregar-porcentaje').value;
     var consecucion_id = document.getElementById('consecucion-id').value
+
+    if (!validarConsecucion(descripcion, meta, porcentaje)) {
+        return;
+    }
 
     fetch(url, {
         method: 'PUT',
