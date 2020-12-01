@@ -1,1 +1,1 @@
-web: gunicorn consecucion.wsgi --log-gile -
+web: gunicorn consecucion.wsgi --log-file -
